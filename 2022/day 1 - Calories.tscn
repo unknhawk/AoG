@@ -1,0 +1,108 @@
+[gd_scene load_steps=4 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
+
+[sub_resource type="Theme" id=2]
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Button
+
+var inputFile=\"res://2022/input-day1.txt\"
+var inputText =\"\"
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	inputText = readFromFile(inputFile)
+	pass
+
+func printToTextbox(text,newline := true):
+	$\"../output\".text=$\"../output\".text+String(text)
+	if newline:
+		$\"../output\".text=$\"../output\".text+\"\\n\"
+	
+
+func readFromFile(input):
+	var file = File.new()
+	var content = \"\"
+	var line =\"\"
+	if file.open(input, File.READ) != OK:
+		print(\"File \", inputFile,\" does not not exist\")
+	while !file.eof_reached() :
+		line= file.get_line()
+		if line==\"\":
+			content+=\"-,\"
+			continue
+		content += line + \",\"
+	file.close()
+	return content
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+
+func sumCalories(food):
+	var tot = 0
+	for i in food.size():
+		tot+=food[i].to_int()
+	return tot
+
+func _on_Button_pressed():
+	var content = []
+	var temp = []
+	var listCalories =[]
+
+	var sum =0
+	printToTextbox(\"Here arrive Santa's elfs\\nElf number 1 has:\")
+	for line in inputText.split(\",\"):
+		if line==\"-\":
+			content.push_back(temp)
+			temp = []
+			printToTextbox(\"\\nElf number \"+String(content.size()+1)+\" has:\")
+			continue
+		temp.append(line)
+		printToTextbox(line+\" Cals, \",false)
+	for bag in content:
+		listCalories.append(sumCalories(bag))
+	listCalories.sort()
+	printToTextbox(\"\\n\\nThe elf with most calories has \"+String(listCalories.max()))
+	for top in 3:
+		sum+=listCalories.pop_back()
+	printToTextbox(\"\\n\\nThe three elves with most calories have in total \"+String(sum))
+	
+	pass
+"
+
+[node name="Calories" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = SubResource( 1 )
+
+[node name="output" type="RichTextLabel" parent="."]
+margin_left = 23.0
+margin_top = 38.0
+margin_right = 590.0
+margin_bottom = 573.0
+theme = SubResource( 2 )
+scroll_following = true
+
+[node name="Button" type="Button" parent="."]
+margin_left = 707.0
+margin_top = 35.0
+margin_right = 991.0
+margin_bottom = 173.0
+text = "Start"
+script = SubResource( 3 )
+
+[connection signal="pressed" from="Button" to="Button" method="_on_Button_pressed"]

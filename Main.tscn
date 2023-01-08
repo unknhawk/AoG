@@ -1,0 +1,36 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Button
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 486.0
+margin_bottom = 388.0
+
+[node name="Button" type="Button" parent="."]
+margin_left = 248.0
+margin_top = 76.0
+margin_right = 522.0
+margin_bottom = 177.0
+rect_scale = Vector2( 2, 2 )
+text = "Launch Day 1"
+script = SubResource( 1 )
