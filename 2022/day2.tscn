@@ -1,0 +1,98 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Control 
+
+func AppendToTextbox(textboxPath,text,newline := true):
+	var txtbox=get_node(textboxPath)
+	txtbox.text=txtbox.text+String(text)
+	if newline:
+		txtbox.text=txtbox.text+\"\\n\"
+
+func readFromFile(input): # format item,item-item (- instead of /n)
+	var file = File.new()
+	var content = \"\"
+	var line =\"\"
+	if file.open(input, File.READ) != OK:
+		print(\"File \", input,\" does not not exist\")
+	while !file.eof_reached() :
+		line= file.get_line()
+		if line==\"\":
+			content+=\"-,\"
+			continue
+		content += line + \",\"
+	file.close()
+	return content
+
+var inputFile=\"res://2022/input-day2.txt\"
+var inputText =\"\"
+var inputContent=[]
+
+const values={\"A\":1, \"B\":2, \"C\":3, \"X\":1 , \"Y\":2, \"Z\":3}
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	inputText = readFromFile(inputFile)
+	inputContent=parseText(inputText)
+	pass
+
+func getPoints1(a,b):
+	var matchScore=[[3,0,6],[6,3,0],[0,6,3]]
+	var result=matchScore[values.get(a)-1][values.get(b)-1] + values.get(a)
+	return result
+
+func getPoints2(a,b):
+	var matchScore=[[0,0,0],[3,3,3],[6,6,6]]
+	var type=[[3,1,2],[1,2,3],[2,3,1]]
+	var result=matchScore[values.get(a)-1][values.get(b)-1] + type[values.get(a)-1][values.get(b)-1]
+	return result
+
+func parseText(input):
+	var result=[]
+	var temp=[]
+	for line in inputText.split(\",\"):
+		if line==\"-\":
+			result.push_back(temp)
+			temp = []
+			continue
+		temp.append(line)
+	return result
+
+func _on_Button_pressed():
+	var startButton = get_node(\"../StartButton\")
+	startButton.set
+	#with open('rockpaperscissor.txt') as f:
+#    matches = [ str(m)  for m in f.read().split(\"\\n\") ]
+#    # point = [(e, t ) for i in matches ]
+#    points1=[ getPoints1(r[2],r[0]) for r in matches]
+#    points2=[ getPoints2(r[2],r[0]) for r in matches]
+#    print(\"Part 1 result is \", sum(points1))
+#    print(\"Part 2 result is \", sum(points2))
+
+	pass # Replace with function body.
+"
+
+[sub_resource type="Theme" id=1]
+
+[node name="RockPaperScissor" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = SubResource( 2 )
+
+[node name="output" type="RichTextLabel" parent="."]
+margin_left = 23.0
+margin_top = 38.0
+margin_right = 590.0
+margin_bottom = 573.0
+theme = SubResource( 1 )
+scroll_following = true
+
+[node name="Button" type="Button" parent="."]
+margin_left = 707.0
+margin_top = 35.0
+margin_right = 991.0
+margin_bottom = 173.0
+text = "Start"
+
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="Button" to="Button" method="_on_Button_pressed"]

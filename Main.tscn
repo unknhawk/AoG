@@ -1,24 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
-[sub_resource type="GDScript" id=1]
-script/source = "extends Button
-
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = \"text\"
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-"
+[ext_resource path="res://global.gd" type="Script" id=1]
+[ext_resource path="res://ItemList.gd" type="Script" id=2]
+[ext_resource path="res://StartButton.gd" type="Script" id=3]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -26,11 +10,34 @@ anchor_bottom = 1.0
 margin_right = 486.0
 margin_bottom = 388.0
 
-[node name="Button" type="Button" parent="."]
-margin_left = 248.0
-margin_top = 76.0
-margin_right = 522.0
-margin_bottom = 177.0
+[node name="Global" type="Node" parent="."]
+script = ExtResource( 1 )
+
+[node name="StartButton" type="Button" parent="."]
+margin_left = 684.0
+margin_top = 165.0
+margin_right = 814.0
+margin_bottom = 231.0
 rect_scale = Vector2( 2, 2 )
-text = "Launch Day 1"
-script = SubResource( 1 )
+text = "Start"
+script = ExtResource( 3 )
+
+[node name="ItemList" type="ItemList" parent="."]
+margin_left = 7.0
+margin_top = 157.0
+margin_right = 597.0
+margin_bottom = 580.0
+script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 20.0
+margin_top = 38.0
+margin_right = 585.0
+margin_bottom = 139.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Select the day to test from the list below and clik on the Start Button "
+align = 1
+valign = 1
+
+[connection signal="pressed" from="StartButton" to="StartButton" method="_on_Button_pressed"]
