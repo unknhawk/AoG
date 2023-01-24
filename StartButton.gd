@@ -12,6 +12,6 @@ func _ready():
 
 
 func _on_Button_pressed():
-	var list= get_node("../ItemList")
-	Global.goto_scene(list.get_item_text(list.get_selected_item()[0]))
+	var list= get_node("../ItemList").get_selected_items()
+	Global.goto_scene(get_node("../ItemList").get_item_text(list[0]))
 	pass # Replace with function body.
